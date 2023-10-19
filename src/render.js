@@ -37,8 +37,7 @@ document.getElementById('mainCanvas').addEventListener("click", function (e) {
         node.style.top = y-30 + 'px';
 
         const nodeText = document.createElement("h2");
-        nodeText.textContent = "q" + nodeCount;
-        nodeCount++;
+        nodeText.textContent = "q" + getNextNodeID();
         node.appendChild(nodeText);
 
         node.addEventListener('click', nodeClick);
@@ -51,9 +50,34 @@ document.getElementById('mainCanvas').addEventListener("click", function (e) {
 
 function nodeClick(){
     if (currentTool === "delete" && this.classList.contains("node")){
-        nodeCount
         this.remove();
+        nodeCount = getNextNodeID();
     }
+}
+
+function getNextNodeID(){
+    let id = 0;
+    while (isIdExist(id)){
+        id++;
+        console.log(id)
+    }
+    return id;
+}
+
+function isIdExist(id){
+    const nodes = document.querySelectorAll('.node');
+    let isFound = false;
+    nodes.forEach(node => {
+        const h2Child = node.querySelector('h2');
+        const textContent = h2Child.textContent;
+        console.log(textContent);
+        const nodeID = parseInt(textContent.substring(1));
+        console.log(nodeID);
+        if (id==nodeID){
+            isFound = true
+        } 
+    })
+    return isFound;
 }
 
 // Drag-and-Drop
